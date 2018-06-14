@@ -1,0 +1,49 @@
+Wymagania ze strony:
+    ☐ Wykorzystanie OpenGL i GLM o ile prowadzacy nie wyraził zgody na coś innego.
+    ☐ Scena zawiera kilka (więcej niż 4 i mniej niż nieskończoność) obiektów trójwymiarowych poruszających się niezależnie (choć to ostatnie może zależeć od projektu). W sytuacji gdy z jakiegoś powodu nie pasuje to do projektu należy dogadać się z prowadzacym.
+    ☐ Interakcja z użytkownikiem (np. poruszanie przedmiotem lub kamerą), bądź animacja automatyczna (zależy od projektu). Program nie powinien być statyczny.
+    ☐ Wszystkie obiekty są oteksturowane. Wykorzystano co najmniej dwie różne tekstury.
+    ☐ Scena jest oświetlona z przynajmniej dwóch źródeł światła. Cieniowanie powinno być widoczne, a nie tylko włączone w kodzie.
+    ☐ Nietrywialne modele 3D. Scena nie może składać się tylko z „gotowców”.
+
+Opis projektu:
+    Trójwymiarowa wersja gry: „Asteroidy”.
+    Po ekranie latają asteroidy. Mamy stateczek obracający się o 360 stopni, który może latać po całym ekranie. Poruszanie jest zgodne z zasadami bezwładności. Stateczek może strzelać do asteroidów.
+    Trafiony asteroid rozbija się na kilka mniejszych. Te mniejsze na kilka jeszcze mniejszych. Dopiero najmniejsze niszczone są całkowicie. Celem gry jest zniszczenie wszystkich asteroidów na ekranie.
+    Opcjonalnie dodanie obsługi wielu „żyć” i wielu poziomów. Sposób przeniesienia gry w 3 wymiar pozostawiamy studentowi.
+
+Ocenianie:
+    ☐ Wykorzystanie nietrywialnych modeli (najlepiej odczytanych z pliku): +0.5 do oceny
+    ☐ Poprawne zarządzanie obiektami na scenie (poprawne poruszanie i dobre wykorzystanie kamery): +0.5 do oceny
+    ☐ Poprawne oteksturowanie obiektów i ocieniowanie obiektów oraz poprawne wykorzystanie mechanizmów OpenGL do rysowania: +1.0 do oceny.
+    ☐ Umiejętność odpowiedzi na zadawane pytania: +1.0 do oceny. Uwaga! Nie znaczy to że można kupić projekt i dostać 4.0! W razie wykrycia takiej sytuacji „but”.
+    ☐ W przypadku grupy trzyosobowej prowadzący będzie upierdliwy jak w sierżant wojsku. Poza tym reguły oceniania takie same.
+    ☐ Projekty specjalne są specjalne a zatem powyższe reguły się nie liczą zupełnie. Ocena jest wystawiana całkowicie na podstawie rozmowy przy oddawaniu projektu.
+
+Todo:
+    ☐ Znaleźć modele w internecie @today 
+    ☐ Parser do wczytywania blików z formatu .obj 
+    ☐ Wczytywanie modeli po parsowaniu plików graficznych
+    ☐ Rysowanie modeli
+    ☐ Generowanie w miarę losowych kształtów asteroid @low 
+    ☐ Podstawowy ruch statku (obrót na strzałkach, klawisze do uruchomienia silnika i strzelania)
+    ☐ Symulacja ruchu w próżni (statek po uruchomieniu silnika porusza się w dana stronę, po puszczeniu przycisku powoli zwalnia, zmiana kierunku następuje po ponownym uruchomieniu silnika)
+    ☐ Wyswietlanie asteroid i nadawanie im prędkosci poczatkowej
+    ☐ Wykrywanie kolizji między statkiem a asteroida
+    ☐ Możliwosć strzelania do asteroid
+    ☐ Dzielenie asteroid po trafieniu
+    ☐ Reflektory i pociski laserowe jako dodatkowe źródła swiatła
+    ☐ Eksplozje i efekty czasteczkowe @low 
+
+Minimal Value Project: 
+    ☐ Wczytywanie modeli z pliku .obj @critical     Marcin
+    ☐ Poruszanie statkiem @critical     Łukasz
+    ☐ Prawidłowa praca kamery (obracanie myszką???) @critical   Łukasz
+    ☐ Latające asteroidy @critical 
+    ☐ Jedno źródło światła w punkcie nie widocznym (ewentualnie gdzieś w oddali model kuli) (Słońce), dwa śródła stożkowe jako reflektory statku @critical 
+
+Important:
+    ✔ Podział zadań @done (2018-6-14 22:37:59)
+    ✔ Metoda współdzielenia kodu @done (2018-6-14 22:08:16)
+    ☐ Terminy
+    ☐ Ustalić milestones
