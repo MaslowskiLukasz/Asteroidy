@@ -1,24 +1,24 @@
 /*
-Niniejszy program jest wolnym oprogramowaniem; moÅ¼esz go
-rozprowadzaÄ‡ dalej i / lub modyfikowaÄ‡ na warunkach Powszechnej
-Licencji Publicznej GNU, wydanej przez FundacjÄ™ Wolnego
-Oprogramowania - wedÅ‚ug wersji 2 tej Licencji lub(wedÅ‚ug twojego
-wyboru) ktÃ³rejÅ› z pÃ³Åºniejszych wersji.
+Niniejszy program jest wolnym oprogramowaniem; mo¿esz go
+rozprowadzaæ dalej i / lub modyfikowaæ na warunkach Powszechnej
+Licencji Publicznej GNU, wydanej przez Fundacjê Wolnego
+Oprogramowania - wed³ug wersji 2 tej Licencji lub(wed³ug twojego
+wyboru) którejœ z póŸniejszych wersji.
 
-Niniejszy program rozpowszechniany jest z nadziejÄ…, iÅ¼ bÄ™dzie on
-uÅ¼yteczny - jednak BEZ JAKIEJKOLWIEK GWARANCJI, nawet domyÅ›lnej
-gwarancji PRZYDATNOÅšCI HANDLOWEJ albo PRZYDATNOÅšCI DO OKREÅšLONYCH
-ZASTOSOWAÅƒ.W celu uzyskania bliÅ¼szych informacji siÄ™gnij do
+Niniejszy program rozpowszechniany jest z nadziej¹, i¿ bêdzie on
+u¿yteczny - jednak BEZ JAKIEJKOLWIEK GWARANCJI, nawet domyœlnej
+gwarancji PRZYDATNOŒCI HANDLOWEJ albo PRZYDATNOŒCI DO OKREŒLONYCH
+ZASTOSOWAÑ.W celu uzyskania bli¿szych informacji siêgnij do
 Powszechnej Licencji Publicznej GNU.
 
-Z pewnoÅ›ciÄ… wraz z niniejszym programem otrzymaÅ‚eÅ› teÅ¼ egzemplarz
+Z pewnoœci¹ wraz z niniejszym programem otrzyma³eœ te¿ egzemplarz
 Powszechnej Licencji Publicznej GNU(GNU General Public License);
-jeÅ›li nie - napisz do Free Software Foundation, Inc., 59 Temple
+jeœli nie - napisz do Free Software Foundation, Inc., 59 Temple
 Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 */
 
 #define GLM_FORCE_RADIANS
-#define GLM_FORCE_SWIZZLE // GLM_SWIZZLE_FULL //na poczÄ…tku pr.
+#define GLM_FORCE_SWIZZLE // GLM_SWIZZLE_FULL //na pocz¹tku pr.
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -36,18 +36,13 @@ using namespace glm;
 
 float speed_x = 0; // [radiany/s]
 float speed_y = 0; // [radiany/s]
+float move_z = 0;
 
-float aspect=1; //Stosunek szerokoÅ›ci do wysokoÅ›ci okna
+float aspect=1; //Stosunek szerokoœci do wysokoœci okna
 
 //Uchwyty na shadery
-ShaderProgram *shaderProgram; //WskaÅºnik na obiekt reprezentujÄ…cy program cieniujÄ…cy.
+ShaderProgram *shaderProgram; //WskaŸnik na obiekt reprezentuj¹cy program cieniuj¹cy.
 
-
-//Kostka
-/*float* vertices=Models::CubeInternal::vertices;
-float* colors=Models::CubeInternal::colors;
-float* normals=Models::CubeInternal::normals;
-int vertexCount=Models::CubeInternal::vertexCount;*/
 
 //Czajnik
 float* vertices=Models::TeapotInternal::vertices;
@@ -56,12 +51,12 @@ float* normals=Models::TeapotInternal::vertexNormals;
 int vertexCount=Models::TeapotInternal::vertexCount;
 
 
-//Procedura obsÅ‚ugi bÅ‚Ä™dÃ³w
+//Procedura obs³ugi b³êdów
 void error_callback(int error, const char* description) {
 	fputs(description, stderr);
 }
 
-//Procedura obsÅ‚ugi klawiatury
+//Procedura obs³ugi klawiatury
 void key_callback(GLFWwindow* window, int key,
 	int scancode, int action, int mods) {
 	if (action == GLFW_PRESS) {
@@ -75,60 +70,63 @@ void key_callback(GLFWwindow* window, int key,
 	if (action == GLFW_RELEASE) {
 		if (key == GLFW_KEY_LEFT) speed_y = 0;
 		if (key == GLFW_KEY_RIGHT) speed_y = 0;
-		if (key == GLFW_KEY_UP) speed_x = 0;
+		if (key == GLFW_KEY_UP) {
+                move_z += 0.5;
+                speed_x = 0;
+		}
 		if (key == GLFW_KEY_DOWN) speed_x = 0;
 	}
 }
 
-//Procedura obÅ‚ugi zmiany rozmiaru bufora ramki
+//Procedura ob³ugi zmiany rozmiaru bufora ramki
 void windowResize(GLFWwindow* window, int width, int height) {
-    glViewport(0, 0, width, height); //Obraz ma byÄ‡ generowany w oknie o tej rozdzielczoÅ›ci
+    glViewport(0, 0, width, height); //Obraz ma byæ generowany w oknie o tej rozdzielczoœci
     if (height!=0) {
-        aspect=(float)width/(float)height; //Stosunek szerokoÅ›ci do wysokoÅ›ci okna
+        aspect=(float)width/(float)height; //Stosunek szerokoœci do wysokoœci okna
     } else {
         aspect=1;
     }
 }
 
 
-//Procedura inicjujÄ…ca
+//Procedura inicjuj¹ca
 void initOpenGLProgram(GLFWwindow* window) {
-	//************Tutaj umieszczaj kod, ktÃ³ry naleÅ¼y wykonaÄ‡ raz, na poczÄ…tku programu************
-	glClearColor(0, 0, 0, 1); //CzyÅ›Ä‡ ekran na czarno
-	glEnable(GL_DEPTH_TEST); //WÅ‚Ä…cz uÅ¼ywanie Z-Bufora
-	glfwSetKeyCallback(window, key_callback); //Zarejestruj procedurÄ™ obsÅ‚ugi klawiatury
-	glfwSetFramebufferSizeCallback(window,windowResize); //Zarejestruj procedurÄ™ obsÅ‚ugi zmiany rozmiaru bufora ramki
+	//************Tutaj umieszczaj kod, który nale¿y wykonaæ raz, na pocz¹tku programu************
+	glClearColor(0, 0, 0, 1); //Czyœæ ekran na czarno
+	glEnable(GL_DEPTH_TEST); //W³¹cz u¿ywanie Z-Bufora
+	glfwSetKeyCallback(window, key_callback); //Zarejestruj procedurê obs³ugi klawiatury
+	glfwSetFramebufferSizeCallback(window,windowResize); //Zarejestruj procedurê obs³ugi zmiany rozmiaru bufora ramki
 
-	shaderProgram=new ShaderProgram("vshader.vert",NULL,"fshader.frag"); //Wczytaj program cieniujÄ…cy
+	shaderProgram=new ShaderProgram("vshader.vert",NULL,"fshader.frag"); //Wczytaj program cieniuj¹cy
 
 }
 
-//Zwolnienie zasobÃ³w zajÄ™tych przez program
+//Zwolnienie zasobów zajêtych przez program
 void freeOpenGLProgram() {
-	delete shaderProgram; //UsuniÄ™cie programu cieniujÄ…cego
+	delete shaderProgram; //Usuniêcie programu cieniuj¹cego
 
 }
 
 void drawObject(ShaderProgram *shaderProgram, mat4 mP, mat4 mV, mat4 mM) {
-	//WÅ‚Ä…czenie programu cieniujÄ…cego, ktÃ³ry ma zostaÄ‡ uÅ¼yty do rysowania
-	//W tym programie wystarczyÅ‚oby wywoÅ‚aÄ‡ to raz, w setupShaders, ale chodzi o pokazanie,
-	//Å¼e mozna zmieniaÄ‡ program cieniujÄ…cy podczas rysowania jednej sceny
+	//W³¹czenie programu cieniuj¹cego, który ma zostaæ u¿yty do rysowania
+	//W tym programie wystarczy³oby wywo³aæ to raz, w setupShaders, ale chodzi o pokazanie,
+	//¿e mozna zmieniaæ program cieniuj¹cy podczas rysowania jednej sceny
 	shaderProgram->use();
 
-	//PrzekaÅ¼ do shadera macierze P,V i M.
-	//W linijkach poniÅ¼ej, polecenie:
+	//Przeka¿ do shadera macierze P,V i M.
+	//W linijkach poni¿ej, polecenie:
 	//  shaderProgram->getUniformLocation("P")
 	//pobiera numer przypisany zmiennej jednorodnej o podanej nazwie
-	//UWAGA! "P" w powyÅ¼szym poleceniu odpowiada deklaracji "uniform mat4 P;" w vertex shaderze,
+	//UWAGA! "P" w powy¿szym poleceniu odpowiada deklaracji "uniform mat4 P;" w vertex shaderze,
 	//a mP w glm::value_ptr(mP) odpowiada argumentowi  "mat4 mP;" TYM pliku.
-	//CaÅ‚a poniÅ¼sza linijka przekazuje do zmiennej jednorodnej P w vertex shaderze dane z argumentu mP niniejszej funkcji
-	//PozostaÅ‚e polecenia dziaÅ‚ajÄ… podobnie.
-	//PoniÅ¼sze polecenia sÄ… z grubsza odpowiednikami glLoadMatrixf ze starego opengla
+	//Ca³a poni¿sza linijka przekazuje do zmiennej jednorodnej P w vertex shaderze dane z argumentu mP niniejszej funkcji
+	//Pozosta³e polecenia dzia³aj¹ podobnie.
+	//Poni¿sze polecenia s¹ z grubsza odpowiednikami glLoadMatrixf ze starego opengla
 	glUniformMatrix4fv(shaderProgram->getUniformLocation("P"),1, false, glm::value_ptr(mP));
 	glUniformMatrix4fv(shaderProgram->getUniformLocation("V"),1, false, glm::value_ptr(mV));
 	glUniformMatrix4fv(shaderProgram->getUniformLocation("M"),1, false, glm::value_ptr(mM));
 
-	//Powiedz OpenGL Å¼e podczas rysowania nalezy przesÅ‚aÄ‡ dane do atrybutÃ³w o numerach wskazanych jako argument.
+	//Powiedz OpenGL ¿e podczas rysowania nalezy przes³aæ dane do atrybutów o numerach wskazanych jako argument.
 	//Polecenie shaderProgram->getAttribLocation("vertex") zwraca numer atrybutu o nazwie "vertex".
 	//Odpowiada to deklaracji "in vec4 vertex;" w vertex shaderze.
 	//Z grubsza odpowiednik polecenia glEnableClientState
@@ -136,9 +134,9 @@ void drawObject(ShaderProgram *shaderProgram, mat4 mP, mat4 mV, mat4 mM) {
     glEnableVertexAttribArray(shaderProgram->getAttribLocation("color"));
     glEnableVertexAttribArray(shaderProgram->getAttribLocation("normal"));
 
-    //WskaÅ¼ tablicÄ™ z ktÃ³rej naleÅ¼y pobraÄ‡ dane do atrybutu o konkretnym numerze.
+    //Wska¿ tablicê z której nale¿y pobraæ dane do atrybutu o konkretnym numerze.
     //Pierwszym argumentem jest numer przypisany atrybutowi, ostatnim tablica zdanymi.
-    //Z grubsza sÄ… to odpowiedniki poleceÅ„ glVertexPointer,glColorPointer i glNormalPointer ze starego OpenGL
+    //Z grubsza s¹ to odpowiedniki poleceñ glVertexPointer,glColorPointer i glNormalPointer ze starego OpenGL
     glVertexAttribPointer(shaderProgram->getAttribLocation("vertex"),4,GL_FLOAT,false,0,vertices);
     glVertexAttribPointer(shaderProgram->getAttribLocation("color"),4,GL_FLOAT,false,0,colors);
     glVertexAttribPointer(shaderProgram->getAttribLocation("normal"),4,GL_FLOAT,false,0,normals);
@@ -146,18 +144,18 @@ void drawObject(ShaderProgram *shaderProgram, mat4 mP, mat4 mV, mat4 mM) {
 	//Narysowanie obiektu
 	glDrawArrays(GL_TRIANGLES,0,vertexCount);
 
-	//PosprzÄ…tanie po sobie
-    //Odpowiednik sekwencji poleceÅ„ glDisableClientState
+	//Posprz¹tanie po sobie
+    //Odpowiednik sekwencji poleceñ glDisableClientState
 	glDisableVertexAttribArray(shaderProgram->getAttribLocation("vertex"));
     glDisableVertexAttribArray(shaderProgram->getAttribLocation("color"));
     glDisableVertexAttribArray(shaderProgram->getAttribLocation("normal"));
 }
 
-//Procedura rysujÄ…ca zawartoÅ›Ä‡ sceny
-void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
-	//************Tutaj umieszczaj kod rysujÄ…cy obraz******************l
+//Procedura rysuj¹ca zawartoœæ sceny
+void drawScene(GLFWwindow* window, float angle_x, float angle_y, float position_z) {
+	//************Tutaj umieszczaj kod rysuj¹cy obraz******************l
 
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT); //Wykonaj czyszczenie bufora kolorÃ³w i gÅ‚Ä™bokoÅ›ci
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT); //Wykonaj czyszczenie bufora kolorów i g³êbokoœci
 
 	glm::mat4 P = glm::perspective(50 * PI / 180, aspect, 1.0f, 50.0f); //Wylicz macierz rzutowania
 
@@ -169,13 +167,15 @@ void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
 
 	//Wylicz macierz modelu rysowanego obiektu
 	glm::mat4 M = glm::mat4(1.0f);
+    M = glm::translate(M, glm::vec3(0.0f, 0.0f, position_z));
 	M = glm::rotate(M, angle_x, glm::vec3(1, 0, 0));
 	M = glm::rotate(M, angle_y, glm::vec3(0, 1, 0));
+
 
 	//Narysuj obiekt
 	drawObject(shaderProgram,P,V,M);
 
-	//PrzerzuÄ‡ tylny bufor na przedni
+	//Przerzuæ tylny bufor na przedni
 	glfwSwapBuffers(window);
 
 }
@@ -184,52 +184,54 @@ void drawScene(GLFWwindow* window, float angle_x, float angle_y) {
 
 int main(void)
 {
-	GLFWwindow* window; //WskaÅºnik na obiekt reprezentujÄ…cy okno
+	GLFWwindow* window; //WskaŸnik na obiekt reprezentuj¹cy okno
 
-	glfwSetErrorCallback(error_callback);//Zarejestruj procedurÄ™ obsÅ‚ugi bÅ‚Ä™dÃ³w
+	glfwSetErrorCallback(error_callback);//Zarejestruj procedurê obs³ugi b³êdów
 
-	if (!glfwInit()) { //Zainicjuj bibliotekÄ™ GLFW
-		fprintf(stderr, "Nie moÅ¼na zainicjowaÄ‡ GLFW.\n");
+	if (!glfwInit()) { //Zainicjuj bibliotekê GLFW
+		fprintf(stderr, "Nie mo¿na zainicjowaæ GLFW.\n");
 		exit(EXIT_FAILURE);
 	}
 
-	window = glfwCreateWindow(500, 500, "OpenGL", NULL, NULL);  //UtwÃ³rz okno 500x500 o tytule "OpenGL" i kontekst OpenGL.
+	window = glfwCreateWindow(500, 500, "OpenGL", NULL, NULL);  //Utwórz okno 500x500 o tytule "OpenGL" i kontekst OpenGL.
 
-	if (!window) //JeÅ¼eli okna nie udaÅ‚o siÄ™ utworzyÄ‡, to zamknij program
+	if (!window) //Je¿eli okna nie uda³o siê utworzyæ, to zamknij program
 	{
-		fprintf(stderr, "Nie moÅ¼na utworzyÄ‡ okna.\n");
+		fprintf(stderr, "Nie mo¿na utworzyæ okna.\n");
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
 
-	glfwMakeContextCurrent(window); //Od tego momentu kontekst okna staje siÄ™ aktywny i polecenia OpenGL bÄ™dÄ… dotyczyÄ‡ wÅ‚aÅ›nie jego.
-	glfwSwapInterval(1); //Czekaj na 1 powrÃ³t plamki przed pokazaniem ukrytego bufora
+	glfwMakeContextCurrent(window); //Od tego momentu kontekst okna staje siê aktywny i polecenia OpenGL bêd¹ dotyczyæ w³aœnie jego.
+	glfwSwapInterval(1); //Czekaj na 1 powrót plamki przed pokazaniem ukrytego bufora
 
-	if (glewInit() != GLEW_OK) { //Zainicjuj bibliotekÄ™ GLEW
-		fprintf(stderr, "Nie moÅ¼na zainicjowaÄ‡ GLEW.\n");
+	if (glewInit() != GLEW_OK) { //Zainicjuj bibliotekê GLEW
+		fprintf(stderr, "Nie mo¿na zainicjowaæ GLEW.\n");
 		exit(EXIT_FAILURE);
 	}
 
-	initOpenGLProgram(window); //Operacje inicjujÄ…ce
+	initOpenGLProgram(window); //Operacje inicjuj¹ce
 
-	float angle_x = 0; //KÄ…t obrotu obiektu
-	float angle_y = 0; //KÄ…t obrotu obiektu
+	float angle_x = 0; //K¹t obrotu obiektu
+	float angle_y = 0; //K¹t obrotu obiektu
+	float position_z = 0;
 
 	glfwSetTime(0); //Wyzeruj licznik czasu
 
-	//GÅ‚Ã³wna pÄ™tla
-	while (!glfwWindowShouldClose(window)) //Tak dÅ‚ugo jak okno nie powinno zostaÄ‡ zamkniÄ™te
+	//G³ówna pêtla
+	while (!glfwWindowShouldClose(window)) //Tak d³ugo jak okno nie powinno zostaæ zamkniête
 	{
-		angle_x += speed_x*glfwGetTime(); //ZwiÄ™ksz kÄ…t o prÄ™dkoÅ›Ä‡ kÄ…towÄ… razy czas jaki upÅ‚ynÄ…Å‚ od poprzedniej klatki
-		angle_y += speed_y*glfwGetTime(); //ZwiÄ™ksz kÄ…t o prÄ™dkoÅ›Ä‡ kÄ…towÄ… razy czas jaki upÅ‚ynÄ…Å‚ od poprzedniej klatki
+		angle_x += speed_x*glfwGetTime(); //Zwiêksz k¹t o prêdkoœæ k¹tow¹ razy czas jaki up³yn¹³ od poprzedniej klatki
+		angle_y += speed_y*glfwGetTime(); //Zwiêksz k¹t o prêdkoœæ k¹tow¹ razy czas jaki up³yn¹³ od poprzedniej klatki
+		position_z += move_z*glfwGetTime(); //Zwiêksz pozycjê - oddalenie od kamery
 		glfwSetTime(0); //Wyzeruj licznik czasu
-		drawScene(window,angle_x,angle_y); //Wykonaj procedurÄ™ rysujÄ…cÄ…
-		glfwPollEvents(); //Wykonaj procedury callback w zaleznoÅ›ci od zdarzeÅ„ jakie zaszÅ‚y.
+		drawScene(window,angle_x,angle_y, position_z); //Wykonaj procedurê rysuj¹c¹
+		glfwPollEvents(); //Wykonaj procedury callback w zaleznoœci od zdarzeñ jakie zasz³y.
 	}
 
 	freeOpenGLProgram();
 
-	glfwDestroyWindow(window); //UsuÅ„ kontekst OpenGL i okno
-	glfwTerminate(); //Zwolnij zasoby zajÄ™te przez GLFW
+	glfwDestroyWindow(window); //Usuñ kontekst OpenGL i okno
+	glfwTerminate(); //Zwolnij zasoby zajête przez GLFW
 	exit(EXIT_SUCCESS);
 }
