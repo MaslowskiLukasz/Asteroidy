@@ -517,7 +517,7 @@
 1464522723 c:\users\user\desktop\studia\grafika\asteroidy\teapot.h
 	"model.h"
 
-1529599227 source:c:\users\user\desktop\studia\grafika\asteroidy\main_file.cpp
+1529607193 source:c:\users\user\desktop\studia\grafika\asteroidy\main_file.cpp
 	<GL/glew.h>
 	<GLFW/glfw3.h>
 	<glm/glm.hpp>

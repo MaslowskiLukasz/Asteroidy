@@ -176,14 +176,16 @@ void drawScene(GLFWwindow* window, float angle_x, float angle_y, float position_
 	//Translate
 	//Rotate
 	//Scale
-	T = glm::translate(T, glm::vec3(0.0f, 0.0f, position_z));
-	//M = glm::rotate(M, angle_y, glm::vec3(0, 1, 0));
-	//M = glm::rotate(M, angle_x, glm::vec3(0, 0, 1));
-    vec3 rotation(angle_x, 0, angle_y);
-    quaternion = quat(rotation);
-    mat4 R = glm::mat4_cast(quaternion);
+	//T = glm::translate(T, glm::vec3(0.0f, 0.0f, position_z));
+	M = glm::translate(M, glm::vec3(0.0f, 0.0f, position_z));
+	M = glm::rotate(M, angle_y, glm::vec3(0, 1, 0));
+	M = glm::rotate(M, angle_x, glm::vec3(0, 0, 1));
 
-    M = T*R;
+    //vec3 rotation(angle_x, 0, angle_y);
+    //quaternion = quat(rotation);
+    //mat4 R = glm::mat4_cast(quaternion);
+
+    //M = T*R*M;
 
 	//Narysuj obiekt
 	drawObject(shaderProgram,P,V,M);
