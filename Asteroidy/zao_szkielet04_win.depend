@@ -517,12 +517,13 @@
 1464522723 c:\users\user\desktop\studia\grafika\asteroidy\teapot.h
 	"model.h"
 
-1529021648 source:c:\users\user\desktop\studia\grafika\asteroidy\main_file.cpp
+1529599227 source:c:\users\user\desktop\studia\grafika\asteroidy\main_file.cpp
 	<GL/glew.h>
 	<GLFW/glfw3.h>
 	<glm/glm.hpp>
 	<glm/gtc/type_ptr.hpp>
 	<glm/gtc/matrix_transform.hpp>
+	<glm/gtc/quaternion.hpp>
 	<stdlib.h>
 	<stdio.h>
 	"constants.h"
